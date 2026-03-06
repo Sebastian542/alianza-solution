@@ -1,4 +1,3 @@
-# alianza-solution
 # Prueba Técnica — Alianza Fiduciaria y Valores
 
 Aplicación fullstack para gestión de clientes. Desarrollada como prueba técnica para el cargo de Ingeniero Fullstack.
