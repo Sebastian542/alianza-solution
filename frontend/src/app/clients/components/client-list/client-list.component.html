@@ -1,0 +1,248 @@
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icono">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="20,2 38,36 2,36" fill="#1a73e8" opacity="0.9"/>
+          <polygon points="20,8 32,34 8,34" fill="#0d5bbf" opacity="0.5"/>
+          <polygon points="26,20 38,36 14,36" fill="#34a853" opacity="0.85"/>
+        </svg>
+      </div>
+      <span class="logo-texto">Alianza</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item activo">
+        <svg class="nav-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Clientes
+      </a>
+      <a class="nav-item deshabilitado">
+        <svg class="nav-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Historial de consultas
+      </a>
+      <a class="nav-item deshabilitado">
+        <svg class="nav-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Configuración PIN
+      </a>
+      <a class="nav-item deshabilitado">
+        <svg class="nav-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Historial PIN
+      </a>
+    </nav>
+  </aside>
+
+  <main class="contenido-principal">
+
+    @if (mensajeExito()) {
+      <div class="alerta alerta-exito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        {{ mensajeExito() }}
+      </div>
+    }
+
+    @if (mensajeError()) {
+      <div class="alerta alerta-error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        {{ mensajeError() }}
+      </div>
+    }
+
+    <div class="barra-herramientas">
+      <div class="acciones">
+        <button class="btn btn-primario" (click)="abrirModalCrear()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nuevo
+        </button>
+        <button class="btn btn-secundario" (click)="exportarCsv()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Exportar
+        </button>
+      </div>
+
+      <div class="barra-busqueda">
+        <div class="busqueda-simple">
+          <input
+            type="text"
+            class="input-busqueda"
+            placeholder="Ingrese clave compartida"
+            [(ngModel)]="claveSimple"
+            [ngModelOptions]="{standalone: true}"
+            (keyup.enter)="onBusquedaSimple()"
+          />
+          <button class="btn btn-contorno" (click)="onBusquedaSimple()">Buscar</button>
+        </div>
+        <button class="btn btn-info" (click)="toggleBusquedaAvanzada()">Búsqueda Avanzada</button>
+      </div>
+    </div>
+
+    @if (mostrarBusquedaAvanzada()) {
+      <div class="panel-busqueda-avanzada">
+        <form [formGroup]="formularioBusqueda" (ngSubmit)="onBusquedaAvanzada()">
+          <div class="grilla-busqueda">
+            <div class="campo-formulario">
+              <label>Nombre</label>
+              <input type="text" class="control-formulario" formControlName="nombre" />
+            </div>
+            <div class="campo-formulario">
+              <label>Teléfono</label>
+              <input type="text" class="control-formulario" formControlName="telefono" />
+            </div>
+            <div class="campo-formulario">
+              <label>Correo electrónico</label>
+              <input type="email" class="control-formulario" formControlName="correoElectronico" />
+            </div>
+            <div class="campo-formulario">
+              <label>Fecha desde</label>
+              <input type="date" class="control-formulario" formControlName="fechaDesde" />
+            </div>
+            <div class="campo-formulario">
+              <label>Fecha hasta</label>
+              <input type="date" class="control-formulario" formControlName="fechaHasta" />
+            </div>
+            <div class="campo-formulario campo-accion">
+              <button type="submit" class="btn btn-primario">Buscar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    }
+
+    <section class="seccion-clientes">
+      <h2 class="titulo-seccion">
+        Clientes
+        <span class="contador-clientes">{{ totalClientes() }}</span>
+      </h2>
+
+      <div class="contenedor-tabla">
+        @if (cargando()) {
+          <div class="overlay-carga">
+            <div class="spinner"></div>
+          </div>
+        }
+
+        <table class="tabla-clientes">
+          <thead>
+            <tr>
+              <th>Clave Compartida</th>
+              <th>Nombre Completo</th>
+              <th>Correo Electrónico</th>
+              <th>Teléfono</th>
+              <th>Fecha Registro</th>
+              <th class="col-accion"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (cliente of clientes(); track cliente.claveCompartida) {
+              <tr>
+                <td class="celda-clave">{{ cliente.claveCompartida }}</td>
+                <td>{{ cliente.nombreCompleto }}</td>
+                <td class="celda-correo">{{ cliente.correoElectronico }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>{{ formatearFecha(cliente.fechaRegistro) }}</td>
+                <td class="celda-accion">
+                  <button class="btn-icono" title="Editar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="estado-vacio">No se encontraron clientes.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    @if (mostrarModalCrear()) {
+      <div class="fondo-modal" (click)="cerrarModalCrear()">
+        <div class="modal" (click)="$event.stopPropagation()">
+          <div class="modal-cabecera">
+            <h3>Crear Nuevo Cliente</h3>
+          </div>
+          <div class="modal-cuerpo">
+            <form [formGroup]="formularioCrear" (ngSubmit)="onCrearCliente()">
+
+              <div class="campo-formulario">
+                <label>Nombre <span class="obligatorio">*</span></label>
+                <input type="text" class="control-formulario"
+                  formControlName="nombre"
+                  [class.invalido]="formularioCrear.get('nombre')?.touched && formularioCrear.get('nombre')?.invalid" />
+                @if (obtenerErrorCampo(formularioCrear, 'nombre')) {
+                  <div class="error-campo">{{ obtenerErrorCampo(formularioCrear, 'nombre') }}</div>
+                }
+              </div>
+
+              <div class="campo-formulario">
+                <label>Teléfono <span class="obligatorio">*</span></label>
+                <input type="tel" class="control-formulario"
+                  formControlName="telefono"
+                  [class.invalido]="formularioCrear.get('telefono')?.touched && formularioCrear.get('telefono')?.invalid" />
+                @if (obtenerErrorCampo(formularioCrear, 'telefono')) {
+                  <div class="error-campo">{{ obtenerErrorCampo(formularioCrear, 'telefono') }}</div>
+                }
+              </div>
+
+              <div class="campo-formulario">
+                <label>Correo electrónico <span class="obligatorio">*</span></label>
+                <input type="email" class="control-formulario"
+                  formControlName="correoElectronico"
+                  [class.invalido]="formularioCrear.get('correoElectronico')?.touched && formularioCrear.get('correoElectronico')?.invalid" />
+                @if (obtenerErrorCampo(formularioCrear, 'correoElectronico')) {
+                  <div class="error-campo">{{ obtenerErrorCampo(formularioCrear, 'correoElectronico') }}</div>
+                }
+              </div>
+
+              <div class="campo-formulario">
+                <label>Fecha inicio</label>
+                <input type="date" class="control-formulario" formControlName="fechaInicio" />
+              </div>
+
+              <div class="campo-formulario">
+                <label>Fecha fin</label>
+                <input type="date" class="control-formulario" formControlName="fechaFin" />
+              </div>
+
+              <div class="modal-pie">
+                <button type="button" class="btn btn-contorno" (click)="cerrarModalCrear()">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    }
+
+  </main>
+</div>
